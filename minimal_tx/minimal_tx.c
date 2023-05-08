@@ -58,7 +58,7 @@ uint64_t DST_MAC;
 uint32_t IP_SRC_ADDR,IP_DST_ADDR;
 
 static const struct rte_eth_conf port_conf_default = {
-        .rxmode = { .max_rx_pkt_len = RTE_ETHER_MAX_LEN }
+        .rxmode = { .mtu = RTE_ETHER_MAX_LEN }
 };
 
 static struct rte_ipv4_hdr  pkt_ip_hdr;  /**< IP header of transmitted packets. */
@@ -177,8 +177,8 @@ static void send_packet(void)
 	
         // set up addresses 
         dst_eth_addr.as_int=rte_cpu_to_be_64(DST_MAC);
-        rte_ether_addr_copy(&dst_eth_addr.as_addr,&eth_hdr.d_addr);
-        rte_ether_addr_copy(&my_addr, &eth_hdr.s_addr);
+        rte_ether_addr_copy(&dst_eth_addr.as_addr,&eth_hdr.dst_addr);
+        rte_ether_addr_copy(&my_addr, &eth_hdr.src_addr);
         eth_hdr.ether_type = rte_cpu_to_be_16(RTE_ETHER_TYPE_IPV4);
 
 	// copy header to packet in mbuf
